@@ -12,3 +12,15 @@ Cargo.lock
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+
+# docsgl from `seroost` project
+/htdocs
+/*.pyc
+/html/copy/jquery-ui.min.js
+/html/copy/jquery.min.js
+/html/copy/MathJax.js
+/html/copy/config
+/html/copy/jax
+/html/copy/*.woff
+.DS_Store
+/__pycache__
