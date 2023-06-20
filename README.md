@@ -63,7 +63,7 @@ indent with 4 spaces not tabs
 ```bash
 cargo --version
 cargo new <project>
-cargo new --vsc=git <project>
+cargo new --vcs=git <project>
 cargo build && ./target/debug/<exe>
 cargo run
 cargo check
@@ -72,3 +72,10 @@ cargo build --release
 
 - `Cargo.toml` -- `TOML` -- _Tom's Obvious, Minimal Language_ cargo's config format
 - `Cargo.lock` -- keeps track of the exact versions of the dependencies 
+
+> `Cargo docs`
+
+```console
+cargo doc
+cargo doc --open
+```
