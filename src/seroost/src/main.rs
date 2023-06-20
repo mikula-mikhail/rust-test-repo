@@ -6,6 +6,9 @@ use std::path::{ Path, PathBuf };
 use xml::reader::{XmlEvent, EventReader};
 use std::collections::HashMap;
 
+// use serde::{ Deserialize, Serialize };
+use serde_json::Result;
+
 #[derive(Debug)]
 struct Lexer<'a> {
     content: &'a [char],
@@ -81,7 +84,7 @@ fn read_entire_xml_file<P: AsRef<Path>>(file_path: P) -> io::Result<String> {
 
 type TermFreq = HashMap::<String, usize>;
 type TermFreqIndex = HashMap<PathBuf, TermFreq>;
-
+/*
 fn main() -> io::Result<()> {
 
     let dir_path = "docs.gl/gl4";
@@ -122,9 +125,24 @@ fn main() -> io::Result<()> {
         */
     }
 
+    let index_path = "index.json";
+    println!("Saving {index_path}...");
+    let index_file = File::create(index_path)?;
+    serde_json::to_writer(index_file, &tf_index).expect("serde works fine");
+    /*
+    let j = serde_json::to_string(&tf_index)?;
     for (path, tf) in tf_index {
         println!("{path:?} has {count} unique tokens", count = tf.len());
     }
-
+    */
+    Ok(())
+}
+*/
+fn main() -> io::Result<()> {
+    let index_path = "index.json";
+    let index_file = File::open(index_path)?;
+    println!("Reading {index_path} index file...");
+    let tf_index: TermFreqIndex = serde_json::from_reader(index_file).expect("serde does not fail");
+    println!("{index_path} contains {count} files", count = tf_index.len());
     Ok(())
 }
