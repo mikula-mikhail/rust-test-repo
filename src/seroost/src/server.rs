@@ -4,7 +4,7 @@ use std::io;
 
 use super::model::*;
 
-use tiny_http::{ Server, Request, Response, Header, Method, StatusCode };
+use tiny_http::{Server, Request, Response, Header, Method, StatusCode};
 
 fn serve_404(request: Request) -> io::Result<()> {
     request.respond(Response::from_string("404").with_status_code(StatusCode(404)))
@@ -21,7 +21,7 @@ fn serve_400(request: Request, message: &str) -> io::Result<()> {
 fn serve_static_file(request: Request, file_path: &str, content_type: &str) -> io::Result<()> {
     let content_type_header = Header::from_bytes("Content-Type", content_type)
         .expect("That we didn't put any garbage in the headers");
-    
+
     let file = match File::open(file_path) {
         Ok(file) => file,
         Err(err) => {
@@ -36,14 +36,13 @@ fn serve_static_file(request: Request, file_path: &str, content_type: &str) -> i
     request.respond(Response::from_file(file).with_header(content_type_header))
 }
 
-fn serve_api_search(model: &InMemoryModel, mut request: Request) -> io::Result<()> {
+fn serve_api_search(model: &impl Model, mut request: Request) -> io::Result<()> {
     let mut buf = Vec::new();
-
     if let Err(err) = request.as_reader().read_to_end(&mut buf) {
         eprintln!("ERROR: could not read the body of the request: {err}");
         return serve_500(request);
     }
-    
+
     let body = match str::from_utf8(&buf) {
         Ok(body) => body.chars().collect::<Vec<_>>(),
         Err(err) => {
@@ -64,11 +63,10 @@ fn serve_api_search(model: &InMemoryModel, mut request: Request) -> io::Result<(
 
     let content_type_header = Header::from_bytes("Content-Type", "application/json")
         .expect("That we didn't put any garbage in the headers");
-
     request.respond(Response::from_string(&json).with_header(content_type_header))
 }
 
-fn serve_request(model: &InMemoryModel, request: Request) -> io::Result<()> {
+fn serve_request(model: &impl Model, request: Request) -> io::Result<()> {
     println!("INFO: received request! method: {:?}, url: {:?}", request.method(), request.url());
 
     match (request.method(), request.url()) {
@@ -87,7 +85,7 @@ fn serve_request(model: &InMemoryModel, request: Request) -> io::Result<()> {
     }
 }
 
-pub fn start(address: &str, model: &InMemoryModel) -> Result<(), ()> {
+pub fn start(address: &str, model: &impl Model) -> Result<(), ()> {
     let server = Server::http(&address).map_err(|err| {
         eprintln!("ERROR: could not start HTTP server at {address}: {err}");
     })?;
@@ -97,10 +95,9 @@ pub fn start(address: &str, model: &InMemoryModel) -> Result<(), ()> {
     for request in server.incoming_requests() {
         serve_request(model, request).map_err(|err| {
             eprintln!("ERROR: could not serve the response: {err}");
-        }).ok();
+        }).ok(); // <- don't stop on errors, keep serving
     }
 
     eprintln!("ERROR: the server socket has shutdown");
     Err(())
 }
-
