@@ -79,3 +79,21 @@ cargo build --release
 cargo doc
 cargo doc --open
 ```
+
+
+### Rust Features
+
+> `Zero-Cost Abstractions`
+> `RAII - resource allocation is initialization`
+    - allocated memory
+    - file handles
+    - database connections
+
+    > `Ownership Rules`
+    > `Borrowing Rules`
+> `Algebraic Data Types`
+> `Polymorphism`
+> `Async`
+> `Macros`
+    - `Hygienic`
+
