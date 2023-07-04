@@ -1,5 +1,7 @@
 # Search Engine in Rust
 
+[origin repo][https://github.com/tsoding/seroost]
+
 Date: 12.06.2023
 __References:__
 - tf-idf: [https://en.wikipedia.org/wiki/Tf%E2%80%93idf]
