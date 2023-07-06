@@ -60,7 +60,7 @@ fn serve_api_stats(model: Arc<Mutex<Model>>, request: Request) -> io::Result<()>
     use serde::Serialize;
 
     #[derive(Default, Serialize)]
-    sturct Stats {
+    struct Stats {
         docs_count: usize,
         terms_count: usize,
     }
