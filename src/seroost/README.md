@@ -14,6 +14,10 @@ __References:__
 - Snowball Programming Language: [https://snowballstem.org/]
 - elasticsearch docs: [https://www.elastic.co/guide/en/elasticsearch/reference/current/stemming.html]
 
+Date: 06.07.2023
+__References:__
+- PDF library: [https://poppler.freedesktop.org]
+
 > JSON
 
 ```bash
